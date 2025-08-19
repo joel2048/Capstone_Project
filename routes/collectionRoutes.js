@@ -23,8 +23,13 @@ router.delete(
 );
 
 router.get(
-  "/collections/cards",
+  "/collections/cards/:id",
   collectionController.getCollectionItems
-)
+);
+
+router.get(
+  "/collections/cards_detail/:id",
+  collectionController.getItemDetails
+);
 
 module.exports = router;

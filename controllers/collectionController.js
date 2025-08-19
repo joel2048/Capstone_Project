@@ -15,4 +15,7 @@ module.exports = {
 
   getCollectionItems: (req, res) =>
     collectionService.getCollectionItems(req, res),
+
+  getItemDetails: (req, res) =>
+    collectionService.getItemDetails(req, res)
 };

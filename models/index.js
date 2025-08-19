@@ -23,9 +23,9 @@ db.Collection = require("./collection")(sequelize, Sequelize.DataTypes);
 db.UserWord = require("./userword")(sequelize, Sequelize.DataTypes);
 
 //associations
-db.CollectionItems.belongsTo(db.Word, { foreignKey: 'slug' })
+db.CollectionItems.belongsTo(db.Word, { foreignKey: 'slug', targetKey: 'slug' })
 db.CollectionItems.belongsTo(db.Collection, { foreignKey: 'collectionId' })
-db.Word.hasMany(db.CollectionItems, { foreignKey: 'slug' })
+db.Word.hasMany(db.CollectionItems, { foreignKey: 'slug', sourceKey: 'slug' })
 db.Collection.hasMany(db.CollectionItems, { foreignKey: 'collectionId' })
 
 db.UserWord.belongsTo(db.User, { foreignKey: 'userId' })

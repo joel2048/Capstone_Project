@@ -1,4 +1,4 @@
-const { Collection, CollectionItems } = require("../models");
+const { Collection, CollectionItems, Word } = require("../models");
 const db = require("../models");
 
 module.exports = {
@@ -125,7 +125,7 @@ module.exports = {
   },
 
   async getCollectionItems(req, res) {
-    const { collectionId } = req.body;
+    const collectionId  = parseInt(req.params.id, 10)
     try {
       const { count, rows: collectionitems } = await CollectionItems.findAndCountAll({
         where: {collectionId: collectionId},
@@ -144,5 +144,34 @@ module.exports = {
         details: err.message,
       });
     }
+  },
+
+  async getItemDetails(req, res) {
+    const collectionId  = parseInt(req.params.id, 10)
+    try {
+      const collectionItemsWithWords = await CollectionItems.findAll({
+        where: { collectionId: collectionId },
+        include: [
+          {
+            model: Word,
+            attributes: ['slug', 'kanji', 'kana', 'jlpt_level']
+          }
+        ]
+      })
+
+      const response = {
+        collectionItemsWithWords
+      }
+
+      res.json(response);
+    } catch (err) {
+      res.status(500).json({
+        error: "Failed to retrieve words",
+        details: err.message,
+      });
+    }
   }
 };
+
+
+
