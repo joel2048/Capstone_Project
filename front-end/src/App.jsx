@@ -20,7 +20,7 @@ function App() {
         <div>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/CardSwipe" element={<CardSwipe />} />
+          <Route path="/CardSwipe/:collectionId" element={<CardSwipe />} />
           <Route path="/Collections" element={<Collections />}/>
           <Route path="/Dictionary" element={<Dictionary />} />
           <Route path="/Profile" element={<Profile />} />

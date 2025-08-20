@@ -1,3 +1,4 @@
+const { postSwipeLeft } = require("../controllers/collectionController");
 const { Collection, CollectionItems, Word } = require("../models");
 const db = require("../models");
 
@@ -5,7 +6,7 @@ module.exports = {
   async getAllCollections(req, res) {
     try {
       const { count, rows: collections } = await Collection.findAndCountAll({
-        attributes: ["collectionName", "userId", "cardTotal"],
+        attributes: ["collectionId", "collectionName", "userId", "cardTotal"],
       });
 
       const response = {
@@ -62,13 +63,12 @@ module.exports = {
   },
 
   async editCollection(req, res) {
-    const { collectionId, newWordList, newName } = req.body;
+    const { collectionId, newWordList } = req.body;
     const t = await db.sequelize.transaction();
 
     try {
       const updatedCollection = await Collection.update(
         {
-          collectionName: newName,
           cardTotal: newWordList.length
         },
         { where: { collectionId: collectionId }, transaction: t }
@@ -80,8 +80,8 @@ module.exports = {
     });
 
     await CollectionItems.bulkCreate(
-      newWordList.map(word => ({
-        slug: word.slug,
+      newWordList.map(slug => ({
+        slug: slug.trim(),
         collectionId
       })),
       { transaction: t }
@@ -148,6 +148,7 @@ module.exports = {
 
   async getItemDetails(req, res) {
     const collectionId  = parseInt(req.params.id, 10)
+    console.log(collectionId)
     try {
       const collectionItemsWithWords = await CollectionItems.findAll({
         where: { collectionId: collectionId },
@@ -170,7 +171,71 @@ module.exports = {
         details: err.message,
       });
     }
-  }
+  },
+
+  async postSwipeLeft(req, res) {
+    const { userId, slug } = req.body;
+  
+    try {
+      let userWord = await db.UserWord.findOne({
+        where: { userId, slug },
+      })
+
+      if (userWord) {
+        await userWord.increment("times_unknown", { by: 1 });
+      } else {
+        // create entry if it doesn't exist
+        userWord = await db.UserWord.create({
+          userId,
+          slug,
+          times_unknown: 1,
+          times_known: 0,
+        });
+      }
+
+      res.json({ message: "Swipe recorded", userWord });
+    } catch (err) {
+      if (!t.finished) {
+        await t.rollback();
+      }
+      res.status(500).json({
+        error: "Failed record swipe",
+        details: err.message,
+      });
+    }
+  },
+
+    async postSwipeRight(req, res) {
+    const { userId, slug } = req.body;
+  
+    try {
+      let userWord = await db.UserWord.findOne({
+        where: { userId, slug },
+      })
+
+      if (userWord) {
+        await userWord.increment("times_known", { by: 1 });
+      } else {
+        // create entry if it doesn't exist
+        userWord = await db.UserWord.create({
+          userId,
+          slug,
+          times_unknown: 0,
+          times_known: 1,
+        });
+      }
+
+      res.json({ message: "Swipe recorded", userWord });
+    } catch (err) {
+      if (!t.finished) {
+        await t.rollback();
+      }
+      res.status(500).json({
+        error: "Failed record swipe",
+        details: err.message,
+      });
+    }
+  },
 };
 
 

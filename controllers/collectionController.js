@@ -17,5 +17,11 @@ module.exports = {
     collectionService.getCollectionItems(req, res),
 
   getItemDetails: (req, res) =>
-    collectionService.getItemDetails(req, res)
+    collectionService.getItemDetails(req, res),
+
+  postSwipeLeft: (req, res) =>
+    collectionService.postSwipeLeft(req, res),
+
+  postSwipeRight: (req, res) =>
+    collectionService.postSwipeRight(req, res),
 };

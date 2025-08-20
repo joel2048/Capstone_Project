@@ -32,4 +32,14 @@ router.get(
   collectionController.getItemDetails
 );
 
+router.post(
+  "/collections/swipe_left",
+  collectionController.postSwipeLeft
+);
+
+router.post(
+  "/collections/swipe_right",
+  collectionController.postSwipeRight
+);
+
 module.exports = router;

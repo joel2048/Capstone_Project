@@ -6,20 +6,48 @@ import axios from "axios";
 
 import WordDetails from "../components/WordDetails";
 
-const collectionId = 2;
+// shuffle function
+function shuffleArray(array = []) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
 
-const fetchWords = async () => {
-  const { data } = await axios.get(
-    `http://localhost:3000/api/collections/cards_detail/${collectionId}`
-  );
-  return data;
-};
-
+//page
 function CardSwipe() {
+  const { collectionId } = useParams()
+
+  const fetchWords = async () => {
+    const { data } = await axios.get(
+      `http://localhost:3000/api/collections/cards_detail/${collectionId}`
+    );
+    return data;
+  };
+
   const { data, error, isLoading } = useQuery({
     queryKey: ["cards"],
     queryFn: fetchWords,
   });
+
+  // Initialize shuffledItems
+  const [shuffledItems, setShuffledItems] = useState(() => {
+    const saved = localStorage.getItem(`shuffledItems-${collectionId}`);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // When data arrives, only shuffle if we don't have saved state
+  useEffect(() => {
+    if (data?.collectionItemsWithWords?.length > 0 && shuffledItems.length === 0) {
+      const shuffled = shuffleArray(data.collectionItemsWithWords);
+      setShuffledItems(shuffled);
+      localStorage.setItem(`shuffledItems-${collectionId}`, JSON.stringify(shuffled));
+    }
+  }, [data]);
+
+  // Save shuffledItems whenever it changes
+  useEffect(() => {
+    if (shuffledItems.length > 0) {
+      localStorage.setItem(`shuffledItems-${collectionId}`, JSON.stringify(shuffledItems));
+    }
+  }, [shuffledItems, collectionId]);
 
   const [showWordDetail, setShowWordDetail] = useState(false);
   const handleWordDetail = () => {
@@ -31,7 +59,7 @@ function CardSwipe() {
     axios.post("http://localhost:3000/api/collections/swipe_left", {
       
             "userId": 1, 
-            "slug": data.collectionItemsWithWords[cardCounter].slug
+            "slug": shuffledItems[cardCounter].slug
         ,
     });
   };
@@ -41,17 +69,23 @@ function CardSwipe() {
     axios.post("http://localhost:3000/api/collections/swipe_right", {
       
             "userId": 1, 
-            "slug": data.collectionItemsWithWords[cardCounter].slug
+            "slug": shuffledItems[cardCounter].slug
         ,
     });
     };
 
   const [side, setSide] = useState(true); //true is front side
-
+  
+  //position in collection
   const [cardCounter, setCardCounter] = useState(() => {
     const saved = localStorage.getItem(`cardCounter-${collectionId}`);
-    return saved ? parseInt(saved, 10) : 3;
+    return saved ? parseInt(saved, 10) : 0;
   });
+  //save position in localstorage
+  useEffect(() => {
+    const saved = localStorage.getItem(`cardCounter-${collectionId}`);
+    setCardCounter(saved ? parseInt(saved, 10) : 0);
+  }, [collectionId]);
 
   useEffect(() => {
     localStorage.setItem(`cardCounter-${collectionId}`, cardCounter);
@@ -62,27 +96,38 @@ function CardSwipe() {
   };
 
   const nextCard = () => {
-    setCardCounter(cardCounter + 1);
-    setSide(true);
+    if (cardCounter + 1 >= shuffledItems.length) {
+      // reached the last card
+      setShuffledItems(shuffleArray(data.collectionItemsWithWords));
+      setCardCounter(0);
+      setShowWordDetail(false);
+      setSide(true);
+    } else {
+      setCardCounter(cardCounter + 1);
+      setShowWordDetail(false);
+      setSide(true);
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading flashcards</div>;
   return (
     <>
+    {shuffledItems.length > 0 && (
+    <>
       <div>
         {side ? (
           <>
             <p>
               Card Content Front:{" "}
-              {data.collectionItemsWithWords[cardCounter].slug}
+              {shuffledItems[cardCounter].slug}
             </p>
           </>
         ) : (
           <>
             <p>
               Card Content Back:{" "}
-              {data.collectionItemsWithWords[cardCounter].Word.kana}
+              {shuffledItems[cardCounter].Word.kana}
             </p>
           </>
         )}
@@ -92,12 +137,12 @@ function CardSwipe() {
         <button onClick={handleSwipeRight}>Swipe Right</button>
         <button onClick={handleWordDetail}>more</button>
         {showWordDetail ? (
-          <WordDetails slug={data.collectionItemsWithWords[cardCounter].slug} />
+          <WordDetails slug={shuffledItems[cardCounter].slug} />
         ) : null}
       </div>
       <div>
         <p>All Cards:</p>
-        {data.collectionItemsWithWords.map((word) => (
+        {shuffledItems.map((word) => (
           <div key={word.slug}>
             <p>{word.slug}</p>
           </div>
@@ -113,8 +158,9 @@ function CardSwipe() {
           alt="placeholder"
         ></img>
       </div>
-      <button>left</button>
-      <button>right</button>
+      
+    </>
+    )}
     </>
   );
 }
