@@ -11,6 +11,7 @@ import CardSwipe from './pages/CardSwipe';
 import Collections from './pages/Collections';
 import Dictionary from './pages/Dictionary';
 import Profile from './pages/Profile';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -19,12 +20,33 @@ function App() {
         <NavBar/>
         <div>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/CardSwipe/:collectionId" element={<CardSwipe />} />
-          <Route path="/Collections" element={<Collections />}/>
-          <Route path="/Dictionary" element={<Dictionary />} />
-          <Route path="/Profile" element={<Profile />} />
 
+          <Route path="/" element={<Home />} />
+
+          <Route path="/CardSwipe/:collectionId" element={
+            <ProtectedRoute>
+            <CardSwipe />
+            </ProtectedRoute>
+            } />
+          
+          <Route path="/Collections" element={
+            <ProtectedRoute>
+            <Collections />
+            </ProtectedRoute>
+            }/>
+          
+          <Route path="/Dictionary" element={
+            <ProtectedRoute>
+            <Dictionary />
+            </ProtectedRoute>
+            } />
+
+          <Route path="/Profile" element={
+            <ProtectedRoute>
+            <Profile />
+            </ProtectedRoute>
+            } />
+            
         </Routes>
         </div>
      </Router>

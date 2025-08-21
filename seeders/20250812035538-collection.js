@@ -33,8 +33,8 @@ module.exports = {
         },
         {
           collectionName: 'JLPT-N3',
-          userId: n3Count,
-          cardTotal: null,
+          userId: null,
+          cardTotal: n3Count,
           createdAt: new Date(),
           updatedAt: new Date()
         }

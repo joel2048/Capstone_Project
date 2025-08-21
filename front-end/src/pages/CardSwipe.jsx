@@ -31,6 +31,7 @@ function CardSwipe() {
     return data;
   };
 
+
   const { data, error, isLoading } = useQuery({
     queryKey: ["cards"],
     queryFn: fetchWords,
@@ -63,23 +64,35 @@ function CardSwipe() {
     setShowWordDetail((prev) => !prev);
   };
 
-  const handleSwipeLeft = () => {
+  const handleSwipeLeft = async () => {
+    const token = await getAccessTokenSilently({
+      audience: "VocabApp",
+    });
     // Send data to the backend via POST
     axios.post("http://localhost:3000/api/collections/swipe_left", {
       
-            "userId": 1, 
             "slug": shuffledItems[cardCounter].slug
         ,
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   };
 
-    const handleSwipeRight = () => {
+    const handleSwipeRight = async () => {
+      const token = await getAccessTokenSilently({
+      audience: "VocabApp",
+    });
     // Send data to the backend via POST
     axios.post("http://localhost:3000/api/collections/swipe_right", {
       
-            "userId": 1, 
             "slug": shuffledItems[cardCounter].slug
         ,
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     };
 
@@ -129,14 +142,15 @@ function CardSwipe() {
           <>
             <p>
               Card Content Front:{" "}
-              {shuffledItems[cardCounter].slug}
+              {shuffledItems[cardCounter].Word.slug}
             </p>
           </>
         ) : (
           <>
             <p>
               Card Content Back:{" "}
-              {shuffledItems[cardCounter].Word.kana}
+              {shuffledItems[cardCounter].Word.kana} <br></br>
+              {shuffledItems[cardCounter].Word.meaning.join(", ")}
             </p>
           </>
         )}
@@ -149,14 +163,14 @@ function CardSwipe() {
           <WordDetails slug={shuffledItems[cardCounter].slug} />
         ) : null}
       </div>
-      <div>
+      {/* <div>
         <p>All Cards:</p>
         {shuffledItems.map((word) => (
           <div key={word.slug}>
             <p>{word.slug}</p>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div>
         <p>CardSwipe</p>

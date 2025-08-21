@@ -27,7 +27,7 @@ module.exports = {
     }));
 
     const N1Words = await db.Word.findAll({
-      where: { jlpt_level: 'jlpt-n2' }
+      where: { jlpt_level: 'jlpt-n1' }
     });
 
     const N1Collection = N1Words.map(word => ({

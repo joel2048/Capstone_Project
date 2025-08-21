@@ -21,7 +21,7 @@ module.exports = {
     let page = 1;
     let allWords = [];
     let seen = new Set();
-    let jlpt = 3; //set jlpt level to start from (5 is highest (easiest level))
+    let jlpt = 5; //set jlpt level to start from (5 is highest (easiest level))
 
     while (true) {
       try {
@@ -29,7 +29,7 @@ module.exports = {
           headers: {
             'User-Agent': 'Mozilla/5.0'
           },
-          timeout: 4000 // polite timeout
+          timeout: 3000 // polite timeout
         });
 
       if (jlpt < 1) break;
@@ -69,6 +69,7 @@ module.exports = {
       slug: word.slug,
       kanji: word.japanese[0]?.word || null,
       kana: word.japanese[0]?.reading || null,
+      meaning: word.senses[0].english_definitions,
       jlpt_level: getLowestJlptLevel(word.jlpt),
       createdAt: new Date(),
       updatedAt: new Date()

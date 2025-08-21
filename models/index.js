@@ -28,6 +28,9 @@ db.CollectionItems.belongsTo(db.Collection, { foreignKey: 'collectionId' })
 db.Word.hasMany(db.CollectionItems, { foreignKey: 'slug', sourceKey: 'slug' })
 db.Collection.hasMany(db.CollectionItems, { foreignKey: 'collectionId' })
 
+db.Collection.belongsTo(db.User, { foreignKey: "userId" });
+db.User.hasMany(db.Collection, { foreignKey: "userId" });
+
 db.UserWord.belongsTo(db.User, { foreignKey: 'userId' })
 db.UserWord.belongsTo(db.Word, { foreignKey: 'slug' })
 db.User.hasMany(db.UserWord, { foreignKey: 'userId' })

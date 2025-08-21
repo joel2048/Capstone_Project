@@ -19,6 +19,9 @@ module.exports = {
       kana: {
         type: Sequelize.STRING
       },
+      meaning: {
+        type: Sequelize.JSON
+      },
       jlpt_level: {
         type: Sequelize.STRING
       },

@@ -24,8 +24,8 @@ function Dictionary() {
       const { data } = await axios.get(
         `https://proxy.corsfix.com/?https://jisho.org/api/v1/search/words?keyword=${query}`
       );
-      const commonWords = data.data.filter(word => word.is_common);
-      const jlptWords = commonWords.filter(word => word.jlpt.length);
+      const commonWords = data.data.filter((word) => word.is_common);
+      const jlptWords = commonWords.filter((word) => word.jlpt.length);
 
       return jlptWords;
     },
@@ -70,17 +70,19 @@ function Dictionary() {
       <SearchBar onEnter={handleSearch} />
       {isLoading && <p>Loading...</p>}
       {error && <p>Error loading results</p>}
-      {resultsToShow.map((word) => (<>
-        <p key={word.slug}>{word.slug}</p><button onClick={() => handleOpen(word.slug)}>add</button>
-      {/* conditionally render add component */}
-      {showAdd && (
-        <AddToCollection
-          selectedSlug={selectedSlug}
-          onClose={handleClose}
-        />
-      )}
+      {resultsToShow.map((word) => (
+        <>
+          <p key={word.slug}>{word.slug}</p>
+          <button onClick={() => handleOpen(word.slug)}>add</button>
+          {/* conditionally render add component */}
         </>
       ))}
+                {showAdd && (
+            <AddToCollection
+              selectedSlug={selectedSlug}
+              onClose={handleClose}
+            />
+          )}
     </div>
   );
 }

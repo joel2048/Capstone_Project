@@ -1,13 +1,24 @@
 const { postSwipeLeft } = require("../controllers/collectionController");
-const { Collection, CollectionItems, Word } = require("../models");
+const { Collection, CollectionItems, Word, User } = require("../models");
 const db = require("../models");
 
 module.exports = {
   async getAllCollections(req, res) {
+    const auth0_id = req.auth.sub;
+    console.log(auth0_id)
     try {
-      const { count, rows: collections } = await Collection.findAndCountAll({
-        attributes: ["collectionId", "collectionName", "userId", "cardTotal"],
+
+      // Find the internal user ID
+      const user = await User.findOne({ where: { auth0_id } });
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      const { count, rows: allCollections } = await Collection.findAndCountAll({
+      attributes: ["collectionId", "collectionName", "userId", "cardTotal"]
       });
+
+      const collections = allCollections.filter(
+        (c) => c.userId === null || c.userId === user.userId
+      );
 
       const response = {
         total: count,
@@ -24,14 +35,21 @@ module.exports = {
   },
 
   async newCollection(req, res) {
-    const { userId, wordList, name } = req.body;
+    const { wordList, name } = req.body;
     const t = await db.sequelize.transaction();
+
+    const auth0_id = req.auth.sub;
+    console.log(auth0_id)
+
+    const user = await User.findOne({ where: { auth0_id } });
+    console.log(user)
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     try {
       const newCollection = await Collection.create(
         {
           collectionName: name,
-          userId: userId,
+          userId: user.userId,
           cardTotal: wordList.length
         },
         { transaction: t }
@@ -50,7 +68,7 @@ module.exports = {
       );
 
       await t.commit();
-      res.json({ success: true, collectionId });
+      res.json("successfully added new collection");
     } catch (err) {
       if (!t.finished) {
         await t.rollback();
@@ -62,11 +80,14 @@ module.exports = {
     }
   },
 
-  async editCollection(req, res) {
+  async editCollection(req, res) {                  //should probably edit this to not destroy and bulkCreate and add row instead
     const { collectionId, newWordList } = req.body;
     const t = await db.sequelize.transaction();
 
     try {
+      if (collectionId === 1 || collectionId === 2 || collectionId === 3) {
+        res.json("editing this collection is not permitted");
+      } else {
       const updatedCollection = await Collection.update(
         {
           cardTotal: newWordList.length
@@ -89,7 +110,7 @@ module.exports = {
 
     await t.commit();
     res.json({ success: true, collectionId });
-    } catch (err) {
+    }} catch (err) {
       if (!t.finished) {
         await t.rollback();
       }
@@ -155,7 +176,7 @@ module.exports = {
         include: [
           {
             model: Word,
-            attributes: ['slug', 'kanji', 'kana', 'jlpt_level']
+            attributes: ['slug', 'kanji', 'kana', 'meaning', 'jlpt_level']
           }
         ]
       })
@@ -174,11 +195,15 @@ module.exports = {
   },
 
   async postSwipeLeft(req, res) {
-    const { userId, slug } = req.body;
-  
+    const { slug } = req.body;
+    const auth0_id = req.auth.sub
+
     try {
+      const user = await User.findOne({ where: { auth0_id } });
+      if (!user) return res.status(404).json({ error: "User not found" });
+
       let userWord = await db.UserWord.findOne({
-        where: { userId, slug },
+        where: { userId: user.userId, slug },
       })
 
       if (userWord) {
@@ -186,7 +211,7 @@ module.exports = {
       } else {
         // create entry if it doesn't exist
         userWord = await db.UserWord.create({
-          userId,
+          userId: user.userId,
           slug,
           times_unknown: 1,
           times_known: 0,
@@ -206,11 +231,15 @@ module.exports = {
   },
 
     async postSwipeRight(req, res) {
-    const { userId, slug } = req.body;
-  
+    const { slug } = req.body;
+    const auth0_id = req.auth.sub
+
     try {
+      const user = await User.findOne({ where: { auth0_id } });
+      if (!user) return res.status(404).json({ error: "User not found" });
+
       let userWord = await db.UserWord.findOne({
-        where: { userId, slug },
+        where: { userId: user.userId, slug },
       })
 
       if (userWord) {
@@ -218,7 +247,7 @@ module.exports = {
       } else {
         // create entry if it doesn't exist
         userWord = await db.UserWord.create({
-          userId,
+          userId: user.userId,
           slug,
           times_unknown: 0,
           times_known: 1,

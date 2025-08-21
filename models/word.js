@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
     kanji: DataTypes.STRING,
     kana: DataTypes.STRING,
+    meaning: DataTypes.JSON,
     jlpt_level: DataTypes.STRING,
   }, {
     sequelize,
