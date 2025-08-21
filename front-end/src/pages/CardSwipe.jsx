@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../index.css";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import axios from "axios";
 
 import WordDetails from "../components/WordDetails";
@@ -13,12 +15,19 @@ function shuffleArray(array = []) {
 
 //page
 function CardSwipe() {
+  const { getAccessTokenSilently } = useAuth0();
   const { collectionId } = useParams()
 
   const fetchWords = async () => {
+    const token = await getAccessTokenSilently({
+      audience: "VocabApp",
+    });
     const { data } = await axios.get(
-      `http://localhost:3000/api/collections/cards_detail/${collectionId}`
-    );
+      `http://localhost:3000/api/collections/cards_detail/${collectionId}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   };
 

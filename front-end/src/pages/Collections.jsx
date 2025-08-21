@@ -4,13 +4,23 @@ import { Link } from 'react-router-dom';
 import "../index.css";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-const fetchCollections = async () => {
-  const { data } = await axios.get("http://localhost:3000/api/collections");
-  return data;
-};
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Collections() {
+  const { getAccessTokenSilently } = useAuth0();
+  const fetchCollections = async () => {
+  const token = await getAccessTokenSilently({
+  audience: "VocabApp",
+});
+    console.log(token)
+    const { data } = await axios.get("http://localhost:3000/api/collections",  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+    );
+    return data;
+  };
   const { data, error, isLoading } = useQuery({
     queryKey: ["collections"],
     queryFn: fetchCollections,

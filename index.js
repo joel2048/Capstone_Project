@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require("cors");
 const app = express();
+const authCheck = require('./middleware/authCheck')
 
 // Load Sequelize and models
 const db = require("./models");
@@ -12,8 +13,13 @@ const collectionRoutes = require("./routes/collectionRoutes");
 app.use(cors());
 app.use(express.json());
 
+app.get('/api/protected', authCheck, (req, res) => {
+  // Handle the protected endpoint logic
+  res.json({ message: 'You accessed a protected endpoint!' });
+});
+
 // Routes
-app.use("/api", collectionRoutes);
+app.use("/api", authCheck, collectionRoutes);
 
 // DB Connection
 db.sequelize.sync()
