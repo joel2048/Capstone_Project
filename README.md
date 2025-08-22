@@ -15,7 +15,7 @@ This is a React + Node.js application designed to help users create and manage v
 
 ---
 
-## Getting Started
+## How to use
 
 ### Backend Setup
 1. **Create SQL schema**  
