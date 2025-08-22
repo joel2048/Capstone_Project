@@ -1,4 +1,3 @@
-// NewCollection.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -44,7 +43,7 @@ const NewCollection = ({ onClose, onCreated }) => {
 
   return (
     <div>
-      <div>
+      <div className="flex flex-col items-center p-4 justify-start">
         <h3>Create New Collection</h3>
         {error && <p>{error}</p>}
         <form onSubmit={handleSubmit}>

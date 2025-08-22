@@ -1,18 +1,47 @@
 import { Link } from "react-router-dom";
-import '../index.css'
-
-
+import LoginButton from "./LoginButton";
+import LogoutButton from "./LogoutButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import "../index.css";
 
 function NavBar() {
-    return(
-    <nav>
-        <Link to="/">Home</Link>
-        <Link to="/CardSwipe">CardSwipe</Link>
-        <Link to="/Collections">Collections</Link>
-        <Link to="/Dictionary">Dictionary</Link>
-        <Link to="/Profile">Profile</Link>
-    </nav>
-    )
+  const { isAuthenticated, isLoading, user } = useAuth0();
+  return (
+    <>
+    
+        <header className="container py-2 flex justify-between items-center max-w-156 mx-auto px-6 rounded-lg bg-stone-500">
+          <nav className="text-xl space-x-5">
+            <Link to="/"
+            className="my-button"
+            >Home</Link>
+
+            <Link to="/Collections"
+            className="my-button"
+            >Collections</Link>
+
+            <Link to="/Dictionary"
+            className="my-button"
+            >Dictionary</Link>
+
+            <Link to="/Statistics"
+            className="my-button">
+            Statistics</Link>
+          </nav>
+        <div className="flex space-x-2">
+        {isAuthenticated && user?.picture && (
+        <Link to="/Profile">
+            <img
+            src={user.picture}
+            alt={"User"}
+            className="w-10 h-10 rounded-full hover:opacity-70 active:scale-75 transition"
+            />
+        </Link>
+        )}
+            { !isAuthenticated ? <LoginButton isLoading={isLoading} /> : <LogoutButton isLoading={isLoading}/> }
+        </div>
+        </header>
+    </>
+  );
 }
 
 export default NavBar;

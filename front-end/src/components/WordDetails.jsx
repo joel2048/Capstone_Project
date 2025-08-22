@@ -24,16 +24,16 @@ function WordDetails(props) {
   if (error) return <div>Error loading details</div>;
   return (
     <div>
-      {data.data[0].senses.map((sense, index) => (
-        <div key={index}>
-          <p>
-            <strong>Part of speech:</strong> {sense.parts_of_speech.join(", ")}
-          </p>
-          <p>
-            <strong>Definitions:</strong> {sense.english_definitions.join(", ")}
-          </p>
-        </div>
-      ))}
+
+          <ul>
+          {data.data[0].senses.map((sense, index) => (
+            <li key={index}>
+              <p className="font-bold">{index+1}. {sense.parts_of_speech.join(", ")}</p>
+              <p className="mb-2">{sense.english_definitions.join(", ")}</p>
+            </li>
+          ))}
+          </ul>
+
     </div>
   );
 }

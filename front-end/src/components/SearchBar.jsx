@@ -8,15 +8,16 @@ const SearchBar = ({ onEnter }) => {
   };
 
   return (
-    <div>
+    <div className="flex space-x-2">
       <input
+        className="rounded-md"
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search..."
       />
-      <button onClick={() => onEnter(value)}>Search</button>
+      <button className="my-button" onClick={() => onEnter(value)}>Search</button>
     </div>
   );
 };

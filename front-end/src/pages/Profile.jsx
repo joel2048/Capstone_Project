@@ -12,11 +12,10 @@ function Profile() {
 
   return (
     isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.name} />
+      <div className="flex flex-col items-center justify-center h-screen space-y-4">
+      <img src={user.picture} alt={user.name} />
       <h2>Welcome, {user.name}!</h2>
       <p>Email: {user.email}</p>
-      <p>Auth0 User ID: {user.sub}</p> {/* <-- This is your unique Auth0 ID */}
       </div>
     )
   );
