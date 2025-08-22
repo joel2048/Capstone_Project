@@ -40,7 +40,7 @@ This is a React + Node.js application designed to help users create and manage v
    ```bash
    npm start
 
-   will run on http://localhost:3000 by default
+will run on http://localhost:3000 by default
 
 ### Front-End Setup
 
@@ -52,4 +52,4 @@ This is a React + Node.js application designed to help users create and manage v
    ```bash
    npm run dev
 
-   will run on http://localhost:5173
+will run on http://localhost:5173
