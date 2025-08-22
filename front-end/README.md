@@ -1,12 +1,55 @@
-# React + Vite
+# VocabApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Description
+This is a React + Node.js application designed to help users create and manage vocabulary flashcards. Users can create custom collections of words, review them using the flashcard swipe function, and track their progress over time (work in progress). The app uses Auth0 for authentication, ensuring secure and personalized learning experiences. The backend is powered by Node.js with Sequelize ORM for database management.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- User authentication with Auth0
+- Look up words
+- Create, edit, and delete word-collections
+- Automatically create flashcards
+- API endpoints protected with JWT tokens
+- Track progress and review history per user (in progress)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting Started
+
+### Backend Setup
+1. **Create SQL schema**  
+   Ensure you have a running SQL database (Postgres, MySQL, etc.) and create the schema for VocabApp.
+
+2. **Fill in config.json**  
+   schema name and password
+
+3. **Install dependencies**  
+   ```bash
+   npm install
+
+4. **run migrations**  
+   ```bash
+   npx sequelize-cli db:migrate
+   
+5. **Seed the database**  
+   ```bash
+   npx sequelize-cli db:seed:all
+
+6. **Start the backend server**  
+   ```bash
+   npm start
+
+   will run on http://localhost:3000 by default
+
+### Front-End Setup
+
+1. **Install dependencies**  
+   ```bash
+   npm install
+
+2. **Start the development server**  
+   ```bash
+   npm run dev
+
+   will run on http://localhost:5173

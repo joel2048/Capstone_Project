@@ -15,9 +15,6 @@ module.exports = {
       slug: {
         type: Sequelize.STRING
       },
-      last_seen: {
-        type: Sequelize.DATE
-      },
       times_known: {
         type: Sequelize.INTEGER
       },

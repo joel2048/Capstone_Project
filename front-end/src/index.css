@@ -78,18 +78,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-html, body, #root {
-  height: 100%;
-  width: 100%;
-  @apply bg-stone-700 min-h-screen;
+#root {
+  min-height: 100%;
 }
 
-body {
+html, body {
+  min-height: 100%;
+  width: 100%;
+  @apply bg-stone-700;
   font-family: "Montserrat", sans-serif;
   font-style: normal;
   font-weight: 400;
-  @apply bg-stone-700 min-h-screen;
   padding: 0;
   margin: 0;
 }

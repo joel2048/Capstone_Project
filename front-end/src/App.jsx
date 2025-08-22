@@ -16,7 +16,7 @@ import Statistics from './pages/Statistics';
 function App() {
   return (
     <Router>
-    <div className="min-h-screen w-full bg-stone-700">
+    <div className="h-screen w-full bg-stone-700">
       <main className="p-4">
         <NavBar/>
             <Routes>
