@@ -1,4 +1,4 @@
-# VocabApp
+# Japanese Vocabulary Flashcards
 
 ## Project Description
 This is a React + Node.js application designed to help users create and manage vocabulary flashcards. Users can create custom collections of words, review them using the flashcard swipe function, and track their progress over time (work in progress). The app uses Auth0 for authentication, ensuring secure and personalized learning experiences. The backend is powered by Node.js with Sequelize ORM for database management.
