@@ -161,11 +161,11 @@ button:focus-visible {
   }
 }
 
-/* Apply animation to card */
+/* apply animation */
 .card-swipe-left {
-  animation: swipe-left 0.6s forwards; /* you can switch to swipe-right */
+  animation: swipe-left 0.6s forwards; 
 }
 
 .card-swipe-right {
-  animation: swipe-right 0.6s forwards; /* you can switch to swipe-right */
+  animation: swipe-right 0.6s forwards; 
 }

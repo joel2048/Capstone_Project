@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       auth0_id: {
-        type: Sequelize.STRING(255), // wide enough for provider|id
+        type: Sequelize.STRING(255),
         allowNull: false,
         unique: true
       },
