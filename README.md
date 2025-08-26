@@ -34,7 +34,9 @@ This is a React + Node.js application designed to help users create and manage v
    
 5. **Seed the database**  
    ```bash
-   npx sequelize-cli db:seed:all
+   npx sequelize-cli db:seed --seed 20250811201510-words.js
+   npx sequelize-cli db:seed --seed 20250812035815-collectionitems.js
+   npx sequelize-cli db:seed --seed 20250812035538-collection.js
 
 6. **Start the backend server**  
    ```bash
