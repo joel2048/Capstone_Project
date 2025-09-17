@@ -3,6 +3,8 @@
 ## Project Description
 This is a React + Node.js application designed to help users create and manage vocabulary flashcards. Users can create custom collections of words by looking them up in an integrated dictionary, review them using the flashcard swipe function, and track their progress over time (work in progress). The app uses Auth0 for authentication, ensuring secure and personalized learning experiences. The backend is powered by Node.js with Sequelize ORM for database management.
 
+<img width="688" height="431" alt="Screenshot (62)" src="https://github.com/user-attachments/assets/b4329800-bf9c-401e-ae4d-762e5394f363" />
+
 ---
 
 ## Features
@@ -11,7 +13,7 @@ This is a React + Node.js application designed to help users create and manage v
 - Create, edit, and delete word-collections
 - Automatically create flashcards
 - API endpoints protected with JWT tokens
-- Track progress and review history per user (in progress)
+- Track progress and review history per user (work in progress)
 
 ---
 
