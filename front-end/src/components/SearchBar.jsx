@@ -16,7 +16,7 @@ const SearchBar = ({ onEnter }) => {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search..."
-      />
+        />
       <button className="my-button" onClick={() => onEnter(value)}>Search</button>
     </div>
   );

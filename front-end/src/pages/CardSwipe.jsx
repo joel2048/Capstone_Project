@@ -35,7 +35,7 @@ function CardSwipe() {
   };
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["cards"],
+    queryKey: ["cards", collectionId],
     queryFn: fetchWords,
   });
 
@@ -44,6 +44,21 @@ function CardSwipe() {
     const saved = localStorage.getItem(`shuffledItems-${collectionId}`);
     return saved ? JSON.parse(saved) : [];
   });
+
+  // Initialize position in collection
+  const [cardCounter, setCardCounter] = useState(() => {
+    const saved = localStorage.getItem(`cardCounter-${collectionId}`);
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  //save position in localstorage
+  useEffect(() => {
+    const saved = localStorage.getItem(`cardCounter-${collectionId}`);
+    setCardCounter(saved ? parseInt(saved, 10) : 0);
+  }, [collectionId]);
+
+  useEffect(() => {
+    localStorage.setItem(`cardCounter-${collectionId}`, cardCounter);
+  }, [cardCounter, collectionId]);
 
   // When data arrives, only shuffle if we don't have saved state
   useEffect(() => {
@@ -112,21 +127,6 @@ function CardSwipe() {
   };
 
   const [side, setSide] = useState(true); //true is front side
-
-  //position in collection
-  const [cardCounter, setCardCounter] = useState(() => {
-    const saved = localStorage.getItem(`cardCounter-${collectionId}`);
-    return saved ? parseInt(saved, 10) : 0;
-  });
-  //save position in localstorage
-  useEffect(() => {
-    const saved = localStorage.getItem(`cardCounter-${collectionId}`);
-    setCardCounter(saved ? parseInt(saved, 10) : 0);
-  }, [collectionId]);
-
-  useEffect(() => {
-    localStorage.setItem(`cardCounter-${collectionId}`, cardCounter);
-  }, [cardCounter, collectionId]);
 
   const cardTurn = () => {
     setSide(!side);

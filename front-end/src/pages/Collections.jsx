@@ -32,6 +32,9 @@ function Collections() {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading collections</div>;
 
+  // Fallbacks because of undefined errors
+  const collections = Array.isArray(data.collections) ? data.collections : [];
+
   return (
     <>
       <div className="flex flex-col items-center h-screen">
@@ -47,8 +50,9 @@ function Collections() {
           <button className="my-button mt-2" onClick={() => setShowNewCollection(true)}>Create new collection</button>
           <p className="mt-2 font-bold">Collection list:</p>
           <ul className="mt-4 w-full">
-            {data.collections.map((collection) => (
-                            <Link
+            {collections.length > 0 ? (
+            data.collections.map((collection) => (
+              <Link
                 className="collections mb-1"
                 to={`/CardSwipe/${collection.collectionId}`}
               >
@@ -60,7 +64,9 @@ function Collections() {
               </li>
               </Link>
           
-            ))}
+            ))) : (
+              <p>No collections available</p>
+            )}
           </ul>
           
         </div>

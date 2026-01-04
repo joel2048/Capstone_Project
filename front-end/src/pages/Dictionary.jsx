@@ -66,8 +66,8 @@ function Dictionary() {
   //handle detail page (... button) (if word info > 5)
   const [showWordDetail, setShowWordDetail] = useState(false);
   const handleWordDetail = (slug) => {
-    setShowWordDetail((prev) => !prev);
     setSelectedSlug(slug);
+    setShowWordDetail((prev) => !prev);
   };
 
   const handleCloseWordDetail = () => {

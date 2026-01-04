@@ -3,7 +3,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 function AddToCollection({ selectedSlug }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const {
+    getAccessTokenSilently
+  } = useAuth0();
 
   const {
     data: collections = [],
@@ -67,13 +69,15 @@ function AddToCollection({ selectedSlug }) {
   if (isLoading) return <p>Loading collections...</p>;
   if (error) return <p>Failed to load collections</p>;
 
-  return (
+  if (collections.length > 0) return (
     <div>
       <p>Select collection:</p>
       {collections
         .filter((collection) => ![1, 2, 3].includes(collection.collectionId))
         .map((collection) => (
-          <button className="my-button"
+          <button
+            type="button" 
+            className="my-button"
             key={collection.collectionId}
             onClick={() =>
               handleAddToCollection(selectedSlug, collection.collectionId)
