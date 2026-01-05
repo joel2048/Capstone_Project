@@ -37,7 +37,7 @@ function Collections() {
 
   return (
     <>
-      <div className="flex flex-col items-center h-screen">
+      <div className="flex flex-col items-center h-auto">
         {showNewCollection ? (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-gray-500 p-6 rounded-lg shadow-lg max-w-md w-full relative">

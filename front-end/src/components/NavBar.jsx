@@ -9,7 +9,7 @@ function NavBar() {
   return (
     <>
     
-        <header className="container py-2 flex justify-between items-center max-w-156 mx-auto px-6 rounded-lg bg-stone-500">
+        <header className="shadow-xl fixed left-4 right-4 w-auto z-50 container flex justify-between items-center px-6 py-2 rounded-lg bg-stone-500">
           <nav className="text-xl space-x-5">
             <Link to="/"
             className="my-button"

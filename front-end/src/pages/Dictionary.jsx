@@ -79,7 +79,7 @@ function Dictionary() {
   const resultsToShow = data || storedResults;
 
   return (
-    <div className="flex flex-col items-center h-screen p-4 justify-start">
+    <div className="flex flex-col items-center min-h-screen p-4 justify-start">
       <SearchBar onEnter={handleSearch} />
       {isLoading && <p>Loading...</p>}
       {error && <p>Error loading results</p>}

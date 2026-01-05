@@ -64,13 +64,16 @@
   @apply bg-green-300 opacity-90;
 }
 
+.custom-fade {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 500%);
+}
+
 :root {
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -79,7 +82,7 @@
 }
 
 #root {
-  min-height: 100%;
+  height: auto;
 }
 
 html, body {
