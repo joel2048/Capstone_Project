@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "zecwid-vyqqIb-8mihmo",
+    "password": "your password",
     "database": "vocabapp",
     "host": "127.0.0.1",
     "dialect": "mysql",
